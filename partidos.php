@@ -91,6 +91,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
     <a href="index.php">Pronósticos</a>
     <a href="partidos.php" class="active">Ver Propuestas</a>
     <a href="ranking.php">Ranking</a>
+    <a href="admin-penta2026.php" style="margin-left:auto;opacity:.6;font-size:12px;">Admin</a>
   </nav>
 </header>
 <main class="main">
