@@ -98,7 +98,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 
   <div class="sort-bar">
     <span>Ordenar partidos:</span>
-    <button class="sort-btn active" onclick="sortGrupos('fecha')" id="btn-fecha">Por fecha</button>
+    <button class="sort-btn active" onclick="sortGrupos('fecha')" id="btn-fecha">Por grupo</button>
+    <button class="sort-btn" onclick="sortGrupos('fecha-asc')" id="btn-fecha-asc">Por fecha</button>
     <button class="sort-btn" onclick="sortGrupos('activo')" id="btn-activo">Más activo</button>
   </div>
 
@@ -111,7 +112,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
         $pronos = $pronos_por_partido[$partido['id']] ?? [];
       ?>
       <?php static $order_idx = 0; $order_idx++; ?>
-      <div class="partido-block" data-count="<?= count($pronos) ?>" data-order="<?= $order_idx ?>">
+      <div class="partido-block" data-count="<?= count($pronos) ?>" data-order="<?= $order_idx ?>" data-fecha="<?= htmlspecialchars($partido['fecha'] ?? '') ?>">
         <div class="partido-header">
           <div>
             <div class="partido-vs"><?= htmlspecialchars($partido['local']) ?> vs <?= htmlspecialchars($partido['visitante']) ?></div>
@@ -149,12 +150,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 <script>
 function sortGrupos(mode) {
   document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('btn-' + mode).classList.add('active');
+  document.getElementById('btn-' + (mode === 'fecha-asc' ? 'fecha-asc' : mode)).classList.add('active');
 
   const container = document.getElementById('grupos-container');
   const blocks = Array.from(container.querySelectorAll('.partido-block'));
 
-  if (mode === 'activo') {
+  if (mode === 'fecha-asc') {
+    blocks.sort((a, b) => {
+      const fa = a.dataset.fecha || '';
+      const fb = b.dataset.fecha || '';
+      return fa.localeCompare(fb);
+    });
+    blocks.forEach(b => container.appendChild(b));
+  } else if (mode === 'activo') {
     blocks.sort((a, b) => {
       const ca = parseInt(a.dataset.count || '0');
       const cb = parseInt(b.dataset.count || '0');
