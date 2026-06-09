@@ -194,6 +194,10 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
     <button class="btn btn-secondary btn-sm" onclick="filterP('Grupo H',this)">Grupo H</button>
     <button class="btn btn-secondary btn-sm" onclick="filterP('Grupo I',this)">Grupo I</button>
     <button class="btn btn-secondary btn-sm" onclick="filterP('Grupo J',this)">Grupo J</button>
+    <button class="btn btn-secondary btn-sm" onclick="filterP('r16',this)">16avos</button>
+    <button class="btn btn-secondary btn-sm" onclick="filterP('qf',this)">Cuartos</button>
+    <button class="btn btn-secondary btn-sm" onclick="filterP('sf',this)">Semis</button>
+    <button class="btn btn-secondary btn-sm" onclick="filterP('final',this)">Final</button>
   </div>
   <div id="partidosView"></div>
 </div>
@@ -272,7 +276,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
       <div class="card-title">Resultados oficiales</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Partido</th><th>Grupo</th><th>Resultado actual</th><th>Establecer resultado</th></tr></thead>
+          <thead><tr><th>Partido</th><th>Fase</th><th>Editar equipos</th><th>Resultado actual</th><th>Establecer resultado</th></tr></thead>
           <tbody id="adminPartidosBody"></tbody>
         </table>
       </div>
@@ -374,6 +378,33 @@ function initPartidos() {
     ['Panamá','Croacia','grupos','Grupo J','2026-06-23'],
     ['Panamá','Inglaterra','grupos','Grupo J','2026-06-27'],
     ['Croacia','Ghana','grupos','Grupo J','2026-06-27'],
+    // 16AVOS
+    ['Por definir','Por definir','r16','16avos','2026-06-30'],
+    ['Por definir','Por definir','r16','16avos','2026-06-30'],
+    ['Por definir','Por definir','r16','16avos','2026-07-01'],
+    ['Por definir','Por definir','r16','16avos','2026-07-01'],
+    ['Por definir','Por definir','r16','16avos','2026-07-02'],
+    ['Por definir','Por definir','r16','16avos','2026-07-02'],
+    ['Por definir','Por definir','r16','16avos','2026-07-03'],
+    ['Por definir','Por definir','r16','16avos','2026-07-03'],
+    ['Por definir','Por definir','r16','16avos','2026-07-04'],
+    ['Por definir','Por definir','r16','16avos','2026-07-04'],
+    ['Por definir','Por definir','r16','16avos','2026-07-05'],
+    ['Por definir','Por definir','r16','16avos','2026-07-05'],
+    ['Por definir','Por definir','r16','16avos','2026-07-06'],
+    ['Por definir','Por definir','r16','16avos','2026-07-06'],
+    ['Por definir','Por definir','r16','16avos','2026-07-07'],
+    ['Por definir','Por definir','r16','16avos','2026-07-08'],
+    // CUARTOS
+    ['Por definir','Por definir','qf','Cuartos','2026-07-11'],
+    ['Por definir','Por definir','qf','Cuartos','2026-07-11'],
+    ['Por definir','Por definir','qf','Cuartos','2026-07-12'],
+    ['Por definir','Por definir','qf','Cuartos','2026-07-12'],
+    // SEMIFINALES
+    ['Por definir','Por definir','sf','Semifinal','2026-07-15'],
+    ['Por definir','Por definir','sf','Semifinal','2026-07-16'],
+    // FINAL
+    ['Por definir','Por definir','final','Final','2026-07-19'],
   ];
   st.partidos = P.map((p,i) => ({
     id: 'p'+i, local: p[0], visitante: p[1], fase: p[2], grupo: p[3], fecha: p[4],
@@ -515,7 +546,11 @@ function filterP(f, btn) {
 function renderPartidos() {
   const view = document.getElementById('partidosView');
   let partidos = st.partidos;
-  if (curFilter !== 'all') partidos = partidos.filter(p => p.grupo === curFilter);
+  const fasesElim = ['r16','qf','sf','final'];
+  if (curFilter !== 'all') {
+    if (fasesElim.includes(curFilter)) partidos = partidos.filter(p => p.fase === curFilter);
+    else partidos = partidos.filter(p => p.grupo === curFilter);
+  }
 
   if (!partidos.length) {
     view.innerHTML = '<div class="empty"><div class="empty-icon">⚽</div>No hay partidos en esta categoría.</div>';
@@ -661,11 +696,24 @@ function addPartido() {
   toast('✓ Partido agregado');
 }
 
+function editarEquipos(pid) {
+  const p = st.partidos.find(x => x.id === pid);
+  const l = prompt('Equipo local:', p.local);
+  if (l === null) return;
+  const v = prompt('Equipo visitante:', p.visitante);
+  if (v === null) return;
+  if (l.trim()) p.local = l.trim();
+  if (v.trim()) p.visitante = v.trim();
+  save(); renderAdminPartidos(); fillPronoSelect();
+  toast('✓ Equipos actualizados');
+}
+
 function renderAdminPartidos() {
   const tbody = document.getElementById('adminPartidosBody');
   tbody.innerHTML = st.partidos.map(p => `<tr>
     <td style="font-weight:500">${p.local} vs ${p.visitante}</td>
     <td style="color:var(--text2)">${p.grupo || p.fase}</td>
+    <td><button class="btn btn-secondary btn-sm" onclick="editarEquipos('${p.id}')">✏ Editar</button></td>
     <td>
       ${p.golesLocal !== null
         ? `<span style="font-family:'Bebas Neue';font-size:18px;color:var(--azul);letter-spacing:2px;">${p.golesLocal} — ${p.golesVisitante}</span>
