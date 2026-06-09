@@ -107,7 +107,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 </head>
 <body>
 <header class="header">
-  <div class="logo">PENTA <span>MUNDIAL 2026</span></div>
+  <div class="logo"><img src="https://pentamarketing.co/penta-logo.png" alt="Penta" style="height:34px;vertical-align:middle;"/> <span>MUNDIAL 2026</span></div>
   <nav class="nav">
     <a href="index.php" class="active">Pronósticos</a>
     <a href="partidos.php">Ver Propuestas</a>

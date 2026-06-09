@@ -1,11 +1,14 @@
 -- Polla Mundialista Penta 2026
--- Ejecutar en phpMyAdmin antes de subir los archivos
+-- Ejecutar en phpMyAdmin antes de subir los archivos PHP
+
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
 
 CREATE TABLE IF NOT EXISTS participantes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(120) NOT NULL UNIQUE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS partidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,7 +20,7 @@ CREATE TABLE IF NOT EXISTS partidos (
     goles_local TINYINT DEFAULT NULL,
     goles_visitante TINYINT DEFAULT NULL,
     creado_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS pronosticos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,11 +32,11 @@ CREATE TABLE IF NOT EXISTS pronosticos (
     UNIQUE KEY unico_prono (participante_id, partido_id),
     FOREIGN KEY (participante_id) REFERENCES participantes(id),
     FOREIGN KEY (partido_id) REFERENCES partidos(id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Partidos Fase de Grupos
 INSERT INTO partidos (local, visitante, fase, grupo, fecha) VALUES
--- GRUPO A: México
+-- GRUPO A
 ('México','Sudáfrica','grupos','Grupo A','2026-06-11'),
 ('Corea del Sur','Chequia','grupos','Grupo A','2026-06-11'),
 ('México','Corea del Sur','grupos','Grupo A','2026-06-18'),
@@ -47,21 +50,21 @@ INSERT INTO partidos (local, visitante, fase, grupo, fecha) VALUES
 ('Polonia','Honduras','grupos','Grupo B','2026-06-19'),
 ('Polonia','Rumania','grupos','Grupo B','2026-06-24'),
 ('Honduras','Canadá','grupos','Grupo B','2026-06-24'),
--- GRUPO C: Brasil
+-- GRUPO C
 ('Brasil','Marruecos','grupos','Grupo C','2026-06-13'),
 ('Haití','Escocia','grupos','Grupo C','2026-06-13'),
 ('Escocia','Marruecos','grupos','Grupo C','2026-06-19'),
 ('Brasil','Haití','grupos','Grupo C','2026-06-19'),
 ('Brasil','Escocia','grupos','Grupo C','2026-06-24'),
 ('Marruecos','Haití','grupos','Grupo C','2026-06-24'),
--- GRUPO D: Estados Unidos
+-- GRUPO D
 ('Estados Unidos','Paraguay','grupos','Grupo D','2026-06-12'),
 ('Australia','Turquía','grupos','Grupo D','2026-06-12'),
 ('Estados Unidos','Australia','grupos','Grupo D','2026-06-19'),
 ('Turquía','Paraguay','grupos','Grupo D','2026-06-19'),
 ('Australia','Paraguay','grupos','Grupo D','2026-06-24'),
 ('Turquía','Estados Unidos','grupos','Grupo D','2026-06-24'),
--- GRUPO E: Ecuador
+-- GRUPO E
 ('Alemania','Curaçao','grupos','Grupo E','2026-06-14'),
 ('Costa de Marfil','Ecuador','grupos','Grupo E','2026-06-14'),
 ('Alemania','Costa de Marfil','grupos','Grupo E','2026-06-20'),
@@ -82,24 +85,51 @@ INSERT INTO partidos (local, visitante, fase, grupo, fecha) VALUES
 ('Uruguay','Cabo Verde','grupos','Grupo G','2026-06-21'),
 ('España','Uruguay','grupos','Grupo G','2026-06-26'),
 ('Cabo Verde','Arabia Saudí','grupos','Grupo G','2026-06-26'),
--- GRUPO H: Francia
+-- GRUPO H
 ('Francia','Irak','grupos','Grupo H','2026-06-15'),
 ('Senegal','Noruega','grupos','Grupo H','2026-06-15'),
 ('Francia','Senegal','grupos','Grupo H','2026-06-22'),
 ('Noruega','Irak','grupos','Grupo H','2026-06-22'),
 ('Francia','Noruega','grupos','Grupo H','2026-06-26'),
 ('Irak','Senegal','grupos','Grupo H','2026-06-26'),
--- GRUPO I: Colombia
+-- GRUPO I
 ('Portugal','Rep. Dem. Congo','grupos','Grupo I','2026-06-14'),
 ('Uzbekistán','Colombia','grupos','Grupo I','2026-06-17'),
 ('Portugal','Uzbekistán','grupos','Grupo I','2026-06-22'),
 ('Colombia','Rep. Dem. Congo','grupos','Grupo I','2026-06-23'),
 ('Colombia','Portugal','grupos','Grupo I','2026-06-27'),
 ('Rep. Dem. Congo','Uzbekistán','grupos','Grupo I','2026-06-27'),
--- GRUPO J: Panamá + Inglaterra
+-- GRUPO J
 ('Inglaterra','Croacia','grupos','Grupo J','2026-06-17'),
 ('Ghana','Panamá','grupos','Grupo J','2026-06-17'),
 ('Inglaterra','Ghana','grupos','Grupo J','2026-06-23'),
 ('Panamá','Croacia','grupos','Grupo J','2026-06-23'),
 ('Panamá','Inglaterra','grupos','Grupo J','2026-06-27'),
-('Croacia','Ghana','grupos','Grupo J','2026-06-27');
+('Croacia','Ghana','grupos','Grupo J','2026-06-27'),
+-- 16AVOS (por definir)
+('Por definir','Por definir','r16','16avos','2026-06-30'),
+('Por definir','Por definir','r16','16avos','2026-06-30'),
+('Por definir','Por definir','r16','16avos','2026-07-01'),
+('Por definir','Por definir','r16','16avos','2026-07-01'),
+('Por definir','Por definir','r16','16avos','2026-07-02'),
+('Por definir','Por definir','r16','16avos','2026-07-02'),
+('Por definir','Por definir','r16','16avos','2026-07-03'),
+('Por definir','Por definir','r16','16avos','2026-07-03'),
+('Por definir','Por definir','r16','16avos','2026-07-04'),
+('Por definir','Por definir','r16','16avos','2026-07-04'),
+('Por definir','Por definir','r16','16avos','2026-07-05'),
+('Por definir','Por definir','r16','16avos','2026-07-05'),
+('Por definir','Por definir','r16','16avos','2026-07-06'),
+('Por definir','Por definir','r16','16avos','2026-07-06'),
+('Por definir','Por definir','r16','16avos','2026-07-07'),
+('Por definir','Por definir','r16','16avos','2026-07-08'),
+-- CUARTOS DE FINAL
+('Por definir','Por definir','qf','Cuartos','2026-07-11'),
+('Por definir','Por definir','qf','Cuartos','2026-07-11'),
+('Por definir','Por definir','qf','Cuartos','2026-07-12'),
+('Por definir','Por definir','qf','Cuartos','2026-07-12'),
+-- SEMIFINALES
+('Por definir','Por definir','sf','Semifinal','2026-07-15'),
+('Por definir','Por definir','sf','Semifinal','2026-07-16'),
+-- FINAL
+('Por definir','Por definir','final','Final','2026-07-19');

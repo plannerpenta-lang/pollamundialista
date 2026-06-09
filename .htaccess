@@ -1,0 +1,13 @@
+# Proteger archivos sensibles
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.sqlite">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Codificación UTF-8
+AddDefaultCharset UTF-8

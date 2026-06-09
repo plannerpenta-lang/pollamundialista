@@ -1,0 +1,6 @@
+<?php
+// Copia este archivo como config.php y rellena tus credenciales de cPanel
+define('DB_HOST', 'localhost');
+define('DB_USER', 'tu_usuario_mysql');
+define('DB_PASS', 'tu_contraseña_mysql');
+define('DB_NAME', 'tu_base_de_datos');

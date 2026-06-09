@@ -123,7 +123,7 @@ tr:last-child td{border-bottom:none;}
 </head>
 <body>
 <header class="header">
-  <div class="logo">PENTA <span>MUNDIAL 2026</span></div>
+  <div class="logo"><img src="https://pentamarketing.co/penta-logo.png" alt="Penta" style="height:34px;vertical-align:middle;"/> <span>MUNDIAL 2026</span></div>
   <nav class="nav" style="display:flex;gap:2px;flex:1;">
     <a href="index.php">← Volver al sitio</a>
     <?php if ($logged): ?>
