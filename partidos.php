@@ -10,7 +10,7 @@ $pronos_q = db()->query('
     FROM pronosticos pr
     JOIN participantes p ON pr.participante_id = p.id
     JOIN partidos pa ON pr.partido_id = pa.id
-    ORDER BY pr.ingresado_at ASC
+    ORDER BY pr.ingresado_at DESC
 ');
 $todos_pronos = $pronos_q->fetchAll();
 
@@ -77,6 +77,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .pts-0{color:#ccc;}
 .pts-pend{color:#ccc;font-size:13px;}
 .empty{text-align:center;padding:20px;color:var(--text2);font-size:13px;}
+.sort-bar{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.sort-bar span{font-size:12px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.8px;}
+.sort-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:#fff;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif;}
+.sort-btn.active{background:var(--azul);color:#fff;border-color:var(--azul);}
+.sort-btn:hover:not(.active){border-color:var(--azul);color:var(--azul);}
 </style>
 </head>
 <body>
@@ -91,6 +96,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 <main class="main">
   <div class="section-title">PROPUESTAS POR <span>PARTIDO</span></div>
 
+  <div class="sort-bar">
+    <span>Ordenar partidos:</span>
+    <button class="sort-btn active" onclick="sortGrupos('fecha')" id="btn-fecha">Por fecha</button>
+    <button class="sort-btn" onclick="sortGrupos('activo')" id="btn-activo">Más activo</button>
+  </div>
+
+  <div id="grupos-container">
   <?php foreach ($grupos as $grp => $pts): ?>
     <div class="grupo-titulo"><?= htmlspecialchars($grp) ?></div>
     <?php foreach ($pts as $partido): ?>
@@ -98,7 +110,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
         $tiene_resultado = $partido['goles_local'] !== null;
         $pronos = $pronos_por_partido[$partido['id']] ?? [];
       ?>
-      <div class="partido-block">
+      <?php static $order_idx = 0; $order_idx++; ?>
+      <div class="partido-block" data-count="<?= count($pronos) ?>" data-order="<?= $order_idx ?>">
         <div class="partido-header">
           <div>
             <div class="partido-vs"><?= htmlspecialchars($partido['local']) ?> vs <?= htmlspecialchars($partido['visitante']) ?></div>
@@ -131,6 +144,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
       </div>
     <?php endforeach; ?>
   <?php endforeach; ?>
+  </div><!-- /grupos-container -->
 </main>
+<script>
+function sortGrupos(mode) {
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + mode).classList.add('active');
+
+  const container = document.getElementById('grupos-container');
+  const blocks = Array.from(container.querySelectorAll('.partido-block'));
+
+  if (mode === 'activo') {
+    blocks.sort((a, b) => {
+      const ca = parseInt(a.dataset.count || '0');
+      const cb = parseInt(b.dataset.count || '0');
+      return cb - ca;
+    });
+    blocks.forEach(b => container.appendChild(b));
+  } else {
+    // Restaurar orden original por fecha (orden del DOM inicial)
+    blocks.sort((a, b) => {
+      const da = parseInt(a.dataset.order || '0');
+      const db2 = parseInt(b.dataset.order || '0');
+      return da - db2;
+    });
+    blocks.forEach(b => container.appendChild(b));
+  }
+}
+</script>
 </body>
 </html>

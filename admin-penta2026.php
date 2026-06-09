@@ -63,8 +63,27 @@ if ($logged) {
         }
     }
 
+    // Eliminar pronóstico
+    if (isset($_POST['eliminar_prono'])) {
+        $prid = (int)$_POST['prono_id'];
+        db()->prepare('DELETE FROM pronosticos WHERE id = ?')->execute([$prid]);
+        $msg = 'Pronóstico eliminado.';
+    }
+
     // Cargar datos
     $partidos = db()->query('SELECT * FROM partidos ORDER BY grupo, fecha, id')->fetchAll();
+    $pronos_admin = db()->query('
+        SELECT pr.id, pr.goles_local, pr.goles_visitante, pr.ingresado_at,
+               p.email, pa.id AS partido_id, pa.local, pa.visitante
+        FROM pronosticos pr
+        JOIN participantes p ON pr.participante_id = p.id
+        JOIN partidos pa ON pr.partido_id = pa.id
+        ORDER BY pa.grupo, pa.fecha, pa.id, pr.ingresado_at DESC
+    ')->fetchAll();
+    $pronos_x_partido = [];
+    foreach ($pronos_admin as $pr) {
+        $pronos_x_partido[$pr['partido_id']][] = $pr;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -227,6 +246,41 @@ tr:last-child td{border-bottom:none;}
         </tbody>
       </table>
     </div>
+  </div>
+  <!-- Pronósticos por partido -->
+  <div class="card">
+    <div class="card-title">Pronósticos registrados (con opción de eliminar)</div>
+    <?php foreach ($partidos as $p):
+      $pronos_p = $pronos_x_partido[$p['id']] ?? [];
+      if (empty($pronos_p)) continue;
+    ?>
+      <div style="margin-bottom:20px;">
+        <div style="font-weight:600;font-size:13px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);">
+          <?= htmlspecialchars($p['local']) ?> vs <?= htmlspecialchars($p['visitante']) ?>
+          <span style="color:var(--text2);font-weight:400;font-size:12px;"> — <?= htmlspecialchars($p['grupo'] ?: $p['fase']) ?> · <?= count($pronos_p) ?> pronóstico<?= count($pronos_p) !== 1 ? 's' : '' ?></span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Email</th><th>Pronóstico</th><th>Ingresado</th><th></th></tr>
+          </thead>
+          <tbody>
+            <?php foreach ($pronos_p as $pr): ?>
+            <tr>
+              <td><?= htmlspecialchars($pr['email']) ?></td>
+              <td style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;"><?= $pr['goles_local'] ?> — <?= $pr['goles_visitante'] ?></td>
+              <td style="color:var(--text2);font-size:12px;"><?= htmlspecialchars(format_bogota($pr['ingresado_at'])) ?></td>
+              <td>
+                <form method="POST" onsubmit="return confirm('¿Eliminar pronóstico de <?= htmlspecialchars(addslashes($pr['email'])) ?>?')">
+                  <input type="hidden" name="prono_id" value="<?= $pr['id'] ?>"/>
+                  <button type="submit" name="eliminar_prono" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+              </td>
+            </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    <?php endforeach; ?>
   </div>
 </main>
 <?php endif; ?>
