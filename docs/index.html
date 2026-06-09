@@ -28,12 +28,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .tab{display:none;}.tab.active{display:block;}
 .page-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:20px;color:var(--azul);}
 .page-title span{color:var(--rojo);}
+/* Cards */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(8,30,201,0.06);}
 .card-title{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
+/* Stats */
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px;}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;box-shadow:0 1px 4px rgba(8,30,201,0.06);}
 .stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--azul);line-height:1;}
 .stat-label{font-size:11px;color:var(--text2);margin-top:3px;}
+/* Botones */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;white-space:nowrap;}
 .btn-primary{background:var(--azul);color:#fff;}
 .btn-primary:hover{background:#061aaa;}
@@ -42,6 +45,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border2);}
 .btn-secondary:hover{color:var(--azul);border-color:var(--azul);}
 .btn-sm{padding:5px 12px;font-size:12px;}
+/* Formularios */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 .form-row.single{grid-template-columns:1fr;}
 .form-row.triple{grid-template-columns:1fr 1fr 1fr;}
@@ -49,18 +53,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .field input,.field select{width:100%;padding:9px 12px;background:#fff;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
 .field input:focus,.field select:focus{border-color:var(--azul);}
 .field .hint{font-size:11px;color:var(--text3);margin-top:4px;}
+/* Tabla */
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
 th{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);background:#f8f9ff;}
 td{padding:11px 12px;border-bottom:1px solid rgba(8,30,201,0.05);font-size:13px;vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#f4f6ff;}
+/* Ranking */
 .rank{font-family:'Bebas Neue',sans-serif;font-size:20px;}
 .r1{color:var(--gold);}.r2{color:var(--silver);}.r3{color:var(--bronze);}.rl{color:var(--rojo);}
 .pts-big{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--azul);}
 .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;}
 .badge-blue{background:#e8ecff;color:var(--azul);}
 .badge-orange{background:#fff3e0;color:#e65c00;}
+.badge-green{background:#e6f9ee;color:#007a33;}
+.badge-red{background:#ffe8e8;color:var(--rojo);}
+/* Partidos vista */
 .partido-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:14px;overflow:hidden;box-shadow:0 1px 4px rgba(8,30,201,0.06);}
 .partido-header{background:var(--azul);color:#fff;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 .partido-vs{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;}
@@ -75,29 +84,47 @@ tr:hover td{background:#f4f6ff;}
 .prono-time{font-size:11px;color:var(--text3);white-space:nowrap;}
 .prono-pts{min-width:44px;text-align:right;font-family:'Bebas Neue',sans-serif;font-size:16px;}
 .pts-10{color:var(--azul);}.pts-5{color:#FF8C00;}.pts-0{color:#ccc;}.pts-pend{color:#ccc;font-size:12px;}
+/* Grupo label */
 .grupo-titulo{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:var(--azul);margin:22px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--azul);}
+/* Filtros */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+/* Score inputs */
 .score-row{display:flex;align-items:flex-end;gap:10px;}
 .score-row .field{flex:1;}
 .score-sep{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--text3);padding-bottom:9px;}
+/* Pronóstico modal resultado */
+.score-result-inputs{display:flex;align-items:center;gap:8px;margin-top:10px;}
+.score-input-sm{width:46px;padding:6px;text-align:center;background:#f4f6ff;border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:18px;outline:none;}
+.score-input-sm:focus{border-color:var(--azul);}
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border:1px solid var(--border2);border-radius:var(--radius-lg);padding:26px;width:90%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(8,30,201,0.15);}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--azul);margin-bottom:18px;}
+.modal-actions{display:flex;gap:8px;margin-top:18px;}
+/* Alert */
 .alert{padding:10px 14px;border-radius:var(--radius);font-size:13px;font-weight:500;margin-bottom:14px;}
 .alert-error{background:#fff0f0;border:1px solid #ffcccc;color:#cc0000;}
 .alert-ok{background:#f0f4ff;border:1px solid var(--border2);color:var(--azul);}
+/* PIN */
 .pin-gate{text-align:center;padding:40px 20px;}
 .pin-gate h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--azul);margin-bottom:8px;}
 .pin-gate p{color:var(--text2);font-size:13px;margin-bottom:18px;}
 .pin-input{width:200px;text-align:center;padding:12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:18px;outline:none;margin-bottom:14px;display:block;margin-left:auto;margin-right:auto;}
 .pin-input:focus{border-color:var(--azul);}
+/* Toast */
 .toast{position:fixed;bottom:20px;right:20px;background:var(--azul);color:#fff;padding:11px 18px;border-radius:var(--radius);font-weight:600;font-size:13px;transform:translateY(80px);opacity:0;transition:all .3s;z-index:300;}
 .toast.show{transform:translateY(0);opacity:1;}
+/* Empty */
 .empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:13px;}
 .empty-icon{font-size:32px;margin-bottom:10px;opacity:.4;}
+/* Divider */
 hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 @media(max-width:600px){
   .form-row,.form-row.triple{grid-template-columns:1fr;}
   .stats-row{grid-template-columns:repeat(2,1fr);}
   .header{padding:0 12px;}
-  .logo{font-size:16px;margin-right:12px;}
+  .logo{font-size:18px;margin-right:12px;}
 }
 </style>
 </head>
@@ -115,7 +142,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 
 <main class="main">
 
-<!-- PRONÓSTICOS -->
+<!-- ======= PRONÓSTICOS ======= -->
 <div class="tab active" id="tab-prono">
   <div class="page-title">INGRESA TU <span>PRONÓSTICO</span></div>
   <div id="pronoAlert"></div>
@@ -152,7 +179,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
   </div>
 </div>
 
-<!-- PROPUESTAS POR PARTIDO -->
+<!-- ======= PROPUESTAS POR PARTIDO ======= -->
 <div class="tab" id="tab-partidos">
   <div class="page-title">PROPUESTAS POR <span>PARTIDO</span></div>
   <div class="filter-bar" id="filterBar">
@@ -175,10 +202,10 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
   <div id="partidosView"></div>
 </div>
 
-<!-- RANKING -->
+<!-- ======= RANKING ======= -->
 <div class="tab" id="tab-ranking">
   <div class="page-title">TABLA DE <span>POSICIONES</span></div>
-  <div class="stats-row">
+  <div class="stats-row" id="statsRow">
     <div class="stat"><div class="stat-num" id="sP">0</div><div class="stat-label">Participantes</div></div>
     <div class="stat"><div class="stat-num" id="sJ">0</div><div class="stat-label">Partidos jugados</div></div>
     <div class="stat"><div class="stat-num" id="sPr">0</div><div class="stat-label">Pronósticos</div></div>
@@ -195,7 +222,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
   </div>
 </div>
 
-<!-- ADMIN -->
+<!-- ======= ADMIN ======= -->
 <div class="tab" id="tab-admin">
   <div id="adminGate">
     <div class="pin-gate">
@@ -211,6 +238,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
       <div class="page-title" style="margin:0;">PANEL <span>ADMIN</span></div>
       <button class="btn btn-danger btn-sm" onclick="lockAdmin()">Cerrar sesión</button>
     </div>
+
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
       <div class="card" style="margin:0;">
         <div class="card-title">Contraseña de acceso</div>
@@ -224,6 +252,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
         </div>
       </div>
     </div>
+
     <div class="card">
       <div class="card-title">+ Agregar nuevo partido</div>
       <div class="form-row triple">
@@ -242,6 +271,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
       </div>
       <button class="btn btn-primary" onclick="addPartido()">+ Agregar partido</button>
     </div>
+
     <div class="card">
       <div class="card-title">Resultados oficiales</div>
       <div class="table-wrap">
@@ -259,12 +289,14 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 <div class="toast" id="toast"></div>
 
 <script>
+// ============ STORAGE ============
 const S = {
   get: k => { try { return JSON.parse(localStorage.getItem('penta26_'+k)); } catch(e) { return null; } },
   set: (k,v) => localStorage.setItem('penta26_'+k, JSON.stringify(v)),
   del: k => localStorage.removeItem('penta26_'+k)
 };
 
+// ============ ESTADO ============
 let st = {
   partidos:    S.get('partidos')    || [],
   pronosticos: S.get('pronosticos') || [],
@@ -272,69 +304,81 @@ let st = {
   adminLogged: false
 };
 
+// ============ PARTIDOS DEFAULT ============
 function initPartidos() {
   if (st.partidos.length > 0) return;
   const P = [
+    // GRUPO A - México
     ['México','Sudáfrica','grupos','Grupo A','2026-06-11'],
     ['Corea del Sur','Chequia','grupos','Grupo A','2026-06-11'],
     ['México','Corea del Sur','grupos','Grupo A','2026-06-18'],
     ['Chequia','Sudáfrica','grupos','Grupo A','2026-06-18'],
     ['Chequia','México','grupos','Grupo A','2026-06-24'],
     ['Sudáfrica','Corea del Sur','grupos','Grupo A','2026-06-24'],
+    // GRUPO B
     ['Canadá','Polonia','grupos','Grupo B','2026-06-12'],
     ['Rumania','Honduras','grupos','Grupo B','2026-06-12'],
     ['Canadá','Rumania','grupos','Grupo B','2026-06-19'],
     ['Polonia','Honduras','grupos','Grupo B','2026-06-19'],
     ['Polonia','Rumania','grupos','Grupo B','2026-06-24'],
     ['Honduras','Canadá','grupos','Grupo B','2026-06-24'],
+    // GRUPO C - Brasil
     ['Brasil','Marruecos','grupos','Grupo C','2026-06-13'],
     ['Haití','Escocia','grupos','Grupo C','2026-06-13'],
     ['Escocia','Marruecos','grupos','Grupo C','2026-06-19'],
     ['Brasil','Haití','grupos','Grupo C','2026-06-19'],
     ['Brasil','Escocia','grupos','Grupo C','2026-06-24'],
     ['Marruecos','Haití','grupos','Grupo C','2026-06-24'],
+    // GRUPO D - Estados Unidos
     ['Estados Unidos','Paraguay','grupos','Grupo D','2026-06-12'],
     ['Australia','Turquía','grupos','Grupo D','2026-06-12'],
     ['Estados Unidos','Australia','grupos','Grupo D','2026-06-19'],
     ['Turquía','Paraguay','grupos','Grupo D','2026-06-19'],
     ['Australia','Paraguay','grupos','Grupo D','2026-06-24'],
     ['Turquía','Estados Unidos','grupos','Grupo D','2026-06-24'],
+    // GRUPO E - Ecuador
     ['Alemania','Curaçao','grupos','Grupo E','2026-06-14'],
     ['Costa de Marfil','Ecuador','grupos','Grupo E','2026-06-14'],
     ['Alemania','Costa de Marfil','grupos','Grupo E','2026-06-20'],
     ['Ecuador','Curaçao','grupos','Grupo E','2026-06-20'],
     ['Ecuador','Alemania','grupos','Grupo E','2026-06-25'],
     ['Curaçao','Costa de Marfil','grupos','Grupo E','2026-06-25'],
+    // GRUPO F - Argentina
     ['Argentina','Argelia','grupos','Grupo F','2026-06-16'],
     ['Austria','Jordania','grupos','Grupo F','2026-06-16'],
     ['Argentina','Austria','grupos','Grupo F','2026-06-21'],
     ['Jordania','Argelia','grupos','Grupo F','2026-06-21'],
     ['Jordania','Argentina','grupos','Grupo F','2026-06-27'],
     ['Argelia','Austria','grupos','Grupo F','2026-06-27'],
+    // GRUPO G - España + Uruguay
     ['España','Cabo Verde','grupos','Grupo G','2026-06-15'],
     ['Arabia Saudí','Uruguay','grupos','Grupo G','2026-06-15'],
     ['España','Arabia Saudí','grupos','Grupo G','2026-06-21'],
     ['Uruguay','Cabo Verde','grupos','Grupo G','2026-06-21'],
     ['España','Uruguay','grupos','Grupo G','2026-06-26'],
     ['Cabo Verde','Arabia Saudí','grupos','Grupo G','2026-06-26'],
+    // GRUPO H - Francia
     ['Francia','Irak','grupos','Grupo H','2026-06-15'],
     ['Senegal','Noruega','grupos','Grupo H','2026-06-15'],
     ['Francia','Senegal','grupos','Grupo H','2026-06-22'],
     ['Noruega','Irak','grupos','Grupo H','2026-06-22'],
     ['Francia','Noruega','grupos','Grupo H','2026-06-26'],
     ['Irak','Senegal','grupos','Grupo H','2026-06-26'],
+    // GRUPO I - Colombia
     ['Portugal','Rep. Dem. Congo','grupos','Grupo I','2026-06-14'],
     ['Uzbekistán','Colombia','grupos','Grupo I','2026-06-17'],
     ['Portugal','Uzbekistán','grupos','Grupo I','2026-06-22'],
     ['Colombia','Rep. Dem. Congo','grupos','Grupo I','2026-06-23'],
     ['Colombia','Portugal','grupos','Grupo I','2026-06-27'],
     ['Rep. Dem. Congo','Uzbekistán','grupos','Grupo I','2026-06-27'],
+    // GRUPO J - Panamá + Inglaterra
     ['Inglaterra','Croacia','grupos','Grupo J','2026-06-17'],
     ['Ghana','Panamá','grupos','Grupo J','2026-06-17'],
     ['Inglaterra','Ghana','grupos','Grupo J','2026-06-23'],
     ['Panamá','Croacia','grupos','Grupo J','2026-06-23'],
     ['Panamá','Inglaterra','grupos','Grupo J','2026-06-27'],
     ['Croacia','Ghana','grupos','Grupo J','2026-06-27'],
+    // 16AVOS
     ['Por definir','Por definir','r16','16avos','2026-06-30'],
     ['Por definir','Por definir','r16','16avos','2026-06-30'],
     ['Por definir','Por definir','r16','16avos','2026-07-01'],
@@ -351,12 +395,15 @@ function initPartidos() {
     ['Por definir','Por definir','r16','16avos','2026-07-06'],
     ['Por definir','Por definir','r16','16avos','2026-07-07'],
     ['Por definir','Por definir','r16','16avos','2026-07-08'],
+    // CUARTOS
     ['Por definir','Por definir','qf','Cuartos','2026-07-11'],
     ['Por definir','Por definir','qf','Cuartos','2026-07-11'],
     ['Por definir','Por definir','qf','Cuartos','2026-07-12'],
     ['Por definir','Por definir','qf','Cuartos','2026-07-12'],
+    // SEMIFINALES
     ['Por definir','Por definir','sf','Semifinal','2026-07-15'],
     ['Por definir','Por definir','sf','Semifinal','2026-07-16'],
+    // FINAL
     ['Por definir','Por definir','final','Final','2026-07-19'],
   ];
   st.partidos = P.map((p,i) => ({
@@ -372,6 +419,7 @@ function save() {
   S.set('pin', st.pin);
 }
 
+// ============ NAVEGACIÓN ============
 function goTab(id, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -383,6 +431,7 @@ function goTab(id, btn) {
   if (id === 'admin')    { if (st.adminLogged) renderAdminPartidos(); }
 }
 
+// ============ UTILS ============
 function toast(msg, error=false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -396,8 +445,15 @@ function nowBogota() {
 }
 
 function formatBogota(str) {
-  const d = new Date(str.replace(' ','T') + '-05:00');
-  return d.toLocaleString('es-CO', { timeZone: 'America/Bogota', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:false });
+  try {
+    const d = new Date(str.replace(' ','T') + '-05:00');
+    if (isNaN(d)) return str;
+    return d.toLocaleString('es-CO', { timeZone: 'America/Bogota', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:false });
+  } catch(e) { return str; }
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function calcPts(prono, partido) {
@@ -408,10 +464,12 @@ function calcPts(prono, partido) {
   return ganPron === ganReal ? 5 : 0;
 }
 
+// ============ PRONÓSTICOS ============
 function fillPronoSelect() {
   const sel = document.getElementById('pronoPartido');
   const cur = sel.value;
   sel.innerHTML = '<option value="">— Selecciona un partido —</option>';
+  // Agrupar por grupo
   const grupos = {};
   st.partidos.forEach(p => {
     const g = p.grupo || p.fase;
@@ -459,10 +517,15 @@ function guardarProno() {
   const yaExiste = st.pronosticos.find(p => p.email === email && p.pid === pid);
   if (yaExiste) return showAlert(alertEl, 'Ya tienes un pronóstico para ese partido.');
 
-  document.getElementById('pronoEmail').value = email;
-  st.pronosticos.push({ id: 'pr'+Date.now(), email, pid, gl: parseInt(gl), gv: parseInt(gv), at: nowBogota() });
+  document.getElementById('pronoEmail').value = email; // auto-lowercase visible
+
+  st.pronosticos.push({
+    id: 'pr'+Date.now(), email, pid,
+    gl: parseInt(gl), gv: parseInt(gv),
+    at: nowBogota()
+  });
   save();
-  alertEl.innerHTML = `<div class="alert alert-ok">✓ Pronóstico guardado para <strong>${email}</strong>. <a href="#" onclick="goTab('partidos',null);document.querySelectorAll('.nav-btn')[1].classList.add('active');document.querySelectorAll('.nav-btn')[0].classList.remove('active');return false;">Ver propuestas →</a></div>`;
+  alertEl.innerHTML = `<div class="alert alert-ok">✓ Pronóstico guardado para <strong>${escHtml(email)}</strong>. <a href="#" onclick="goTab('partidos',null);document.querySelectorAll('.nav-btn')[1].classList.add('active');document.querySelectorAll('.nav-btn')[0].classList.remove('active');return false;">Ver propuestas →</a></div>`;
   document.getElementById('pronoGL').value = '0';
   document.getElementById('pronoGV').value = '0';
   document.getElementById('pronoPartido').value = '';
@@ -475,6 +538,7 @@ function showAlert(el, msg) {
   el.innerHTML = `<div class="alert alert-error">⚠ ${msg}</div>`;
 }
 
+// ============ VISTA PARTIDOS ============
 let curFilter = 'all';
 
 function filterP(f, btn) {
@@ -494,23 +558,36 @@ function renderPartidos() {
     if (fasesElim.includes(curFilter)) partidos = partidos.filter(p => p.fase === curFilter);
     else partidos = partidos.filter(p => p.grupo === curFilter);
   }
+
   if (!partidos.length) {
     view.innerHTML = '<div class="empty"><div class="empty-icon">⚽</div>No hay partidos en esta categoría.</div>';
     return;
   }
+
+  // Agrupar por grupo
   const grupos = {};
   partidos.forEach(p => {
     const g = p.grupo || p.fase;
     if (!grupos[g]) grupos[g] = [];
     grupos[g].push(p);
   });
+
   let html = '';
   Object.entries(grupos).forEach(([g, ps]) => {
-    if (curFilter === 'all') html += `<div class="grupo-titulo">${g}</div>`;
+    if (curFilter === 'all') html += `<div class="grupo-titulo">${escHtml(g)}</div>`;
     ps.forEach(p => {
       const pronos = st.pronosticos.filter(pr => pr.pid === p.id);
       const tieneRes = p.golesLocal !== null;
-      html += `<div class="partido-block"><div class="partido-header"><div><div class="partido-vs">${p.local} vs ${p.visitante}</div><div class="partido-meta">${p.fecha} &nbsp;|&nbsp; ${pronos.length} propuesta${pronos.length !== 1 ? 's' : ''}</div></div>${tieneRes ? `<span class="resultado-badge">${p.golesLocal} — ${p.golesVisitante}</span>` : `<span class="pendiente-badge">Resultado pendiente</span>`}</div>`;
+      html += `<div class="partido-block">
+        <div class="partido-header">
+          <div>
+            <div class="partido-vs">${escHtml(p.local)} vs ${escHtml(p.visitante)}</div>
+            <div class="partido-meta">${escHtml(p.fecha)} &nbsp;|&nbsp; ${pronos.length} propuesta${pronos.length !== 1 ? 's' : ''}</div>
+          </div>
+          ${tieneRes
+            ? `<span class="resultado-badge">${p.golesLocal} — ${p.golesVisitante}</span>`
+            : `<span class="pendiente-badge">Resultado pendiente</span>`}
+        </div>`;
       if (!pronos.length) {
         html += `<div class="empty" style="padding:16px;">Aún no hay pronósticos.</div>`;
       } else {
@@ -519,7 +596,12 @@ function renderPartidos() {
           const pts = calcPts(pr, p);
           const ptsClass = pts === null ? 'pts-pend' : `pts-${Math.min(pts,10)}`;
           const ptsLabel = pts === null ? '?' : (pts > 0 ? '+'+pts : '0');
-          html += `<div class="prono-row"><div class="prono-email">${pr.email}</div><div class="prono-score">${pr.gl}—${pr.gv}</div><div class="prono-time">⏱ ${formatBogota(pr.at)} (UTC-5)</div><div class="prono-pts ${ptsClass}">${ptsLabel}</div></div>`;
+          html += `<div class="prono-row">
+            <div class="prono-email">${escHtml(pr.email)}</div>
+            <div class="prono-score">${pr.gl}—${pr.gv}</div>
+            <div class="prono-time">⏱ ${formatBogota(pr.at)} (UTC-5)</div>
+            <div class="prono-pts ${ptsClass}">${ptsLabel}</div>
+          </div>`;
         });
         html += `</div>`;
       }
@@ -529,6 +611,7 @@ function renderPartidos() {
   view.innerHTML = html;
 }
 
+// ============ RANKING ============
 function calcRanking() {
   const emails = [...new Set(st.pronosticos.map(p => p.email))];
   return emails.map(email => {
@@ -554,6 +637,7 @@ function renderRanking() {
   document.getElementById('sJ').textContent  = jugados;
   document.getElementById('sPr').textContent = st.pronosticos.length;
   document.getElementById('sEx').textContent = ranked.reduce((a,r) => a+r.exactos, 0);
+
   const tbody = document.getElementById('rankingBody');
   if (!ranked.length) {
     tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">📊</div>Aún no hay pronósticos.</div></td></tr>`;
@@ -564,10 +648,18 @@ function renderRanking() {
     const esUlt = pos === n && n > 3;
     const rc = pos===1?'r1':pos===2?'r2':pos===3?'r3':esUlt?'rl':'';
     const medal = pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':esUlt?'😅':pos;
-    return `<tr><td><span class="rank ${rc}">${medal}</span></td><td style="font-size:13px;">${r.email}</td><td style="text-align:center"><span class="badge badge-blue">${r.exactos} 🎯</span></td><td style="text-align:center"><span class="badge badge-orange">${r.ganadores} ✓</span></td><td style="text-align:center;color:var(--text3)">${r.total}</td><td style="text-align:right"><span class="pts-big">${r.pts}</span></td></tr>`;
+    return `<tr>
+      <td><span class="rank ${rc}">${medal}</span></td>
+      <td style="font-size:13px;">${escHtml(r.email)}</td>
+      <td style="text-align:center"><span class="badge badge-blue">${r.exactos} 🎯</span></td>
+      <td style="text-align:center"><span class="badge badge-orange">${r.ganadores} ✓</span></td>
+      <td style="text-align:center;color:var(--text3)">${r.total}</td>
+      <td style="text-align:right"><span class="pts-big">${r.pts}</span></td>
+    </tr>`;
   }).join('');
 }
 
+// ============ ADMIN ============
 function checkPin() {
   const val = document.getElementById('pinInput').value;
   if (val === st.pin) {
@@ -625,7 +717,27 @@ function editarEquipos(pid) {
 
 function renderAdminPartidos() {
   const tbody = document.getElementById('adminPartidosBody');
-  tbody.innerHTML = st.partidos.map(p => `<tr><td style="font-weight:500">${p.local} vs ${p.visitante}</td><td style="color:var(--text2)">${p.grupo || p.fase}</td><td><button class="btn btn-secondary btn-sm" onclick="editarEquipos('${p.id}')">✏ Editar</button></td><td>${p.golesLocal !== null ? `<span style="font-family:'Bebas Neue';font-size:18px;color:var(--azul);letter-spacing:2px;">${p.golesLocal} — ${p.golesVisitante}</span><button class="btn btn-danger btn-sm" style="margin-left:8px;" onclick="borrarResultado('${p.id}')">✕</button>` : `<span style="color:#ccc;font-size:12px;">Pendiente</span>`}</td><td><div style="display:flex;align-items:center;gap:6px;"><input type="number" id="rl-${p.id}" min="0" max="20" placeholder="—" value="${p.golesLocal ?? ''}" style="width:42px;padding:5px;text-align:center;border:1px solid var(--border2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:16px;outline:none;"/><span style="font-family:'Bebas Neue';color:var(--text3);">:</span><input type="number" id="rv-${p.id}" min="0" max="20" placeholder="—" value="${p.golesVisitante ?? ''}" style="width:42px;padding:5px;text-align:center;border:1px solid var(--border2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:16px;outline:none;"/><button class="btn btn-primary btn-sm" onclick="guardarResultado('${p.id}')">✓</button></div></td></tr>`).join('');
+  tbody.innerHTML = st.partidos.map(p => `<tr>
+    <td style="font-weight:500">${escHtml(p.local)} vs ${escHtml(p.visitante)}</td>
+    <td style="color:var(--text2)">${escHtml(p.grupo || p.fase)}</td>
+    <td><button class="btn btn-secondary btn-sm" onclick="editarEquipos('${p.id}')">✏ Editar</button></td>
+    <td>
+      ${p.golesLocal !== null
+        ? `<span style="font-family:'Bebas Neue';font-size:18px;color:var(--azul);letter-spacing:2px;">${p.golesLocal} — ${p.golesVisitante}</span>
+           <button class="btn btn-danger btn-sm" style="margin-left:8px;" onclick="borrarResultado('${p.id}')">✕</button>`
+        : `<span style="color:#ccc;font-size:12px;">Pendiente</span>`}
+    </td>
+    <td>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <input type="number" id="rl-${p.id}" min="0" max="20" placeholder="—" value="${p.golesLocal ?? ''}"
+          style="width:42px;padding:5px;text-align:center;border:1px solid var(--border2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:16px;outline:none;"/>
+        <span style="font-family:'Bebas Neue';color:var(--text3);">:</span>
+        <input type="number" id="rv-${p.id}" min="0" max="20" placeholder="—" value="${p.golesVisitante ?? ''}"
+          style="width:42px;padding:5px;text-align:center;border:1px solid var(--border2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:16px;outline:none;"/>
+        <button class="btn btn-primary btn-sm" onclick="guardarResultado('${p.id}')">✓</button>
+      </div>
+    </td>
+  </tr>`).join('');
 }
 
 function guardarResultado(pid) {
@@ -655,6 +767,7 @@ function exportCSV() {
   a.click();
 }
 
+// ============ BOOT ============
 initPartidos();
 fillPronoSelect();
 </script>
