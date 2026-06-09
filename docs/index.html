@@ -445,8 +445,15 @@ function nowBogota() {
 }
 
 function formatBogota(str) {
-  const d = new Date(str.replace(' ','T') + '-05:00');
-  return d.toLocaleString('es-CO', { timeZone: 'America/Bogota', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:false });
+  try {
+    const d = new Date(str.replace(' ','T') + '-05:00');
+    if (isNaN(d)) return str;
+    return d.toLocaleString('es-CO', { timeZone: 'America/Bogota', day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:false });
+  } catch(e) { return str; }
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function calcPts(prono, partido) {
@@ -590,7 +597,7 @@ function renderPartidos() {
           const ptsClass = pts === null ? 'pts-pend' : `pts-${Math.min(pts,10)}`;
           const ptsLabel = pts === null ? '?' : (pts > 0 ? '+'+pts : '0');
           html += `<div class="prono-row">
-            <div class="prono-email">${pr.email}</div>
+            <div class="prono-email">${escHtml(pr.email)}</div>
             <div class="prono-score">${pr.gl}—${pr.gv}</div>
             <div class="prono-time">⏱ ${formatBogota(pr.at)} (UTC-5)</div>
             <div class="prono-pts ${ptsClass}">${ptsLabel}</div>
@@ -638,12 +645,12 @@ function renderRanking() {
   }
   tbody.innerHTML = ranked.map((r, i) => {
     const pos = i+1, n = ranked.length;
-    const esUlt = pos === n && n > 3;
+    const esUlt = pos === n && n > 1;
     const rc = pos===1?'r1':pos===2?'r2':pos===3?'r3':esUlt?'rl':'';
     const medal = pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':esUlt?'😅':pos;
     return `<tr>
       <td><span class="rank ${rc}">${medal}</span></td>
-      <td style="font-size:13px;">${r.email}</td>
+      <td style="font-size:13px;">${escHtml(r.email)}</td>
       <td style="text-align:center"><span class="badge badge-blue">${r.exactos} 🎯</span></td>
       <td style="text-align:center"><span class="badge badge-orange">${r.ganadores} ✓</span></td>
       <td style="text-align:center;color:var(--text3)">${r.total}</td>
@@ -758,13 +765,6 @@ function exportCSV() {
   a.href = 'data:text/csv;charset=utf-8,﻿' + encodeURIComponent(csv);
   a.download = 'ranking_penta2026.csv';
   a.click();
-}
-
-function confirmReset() {
-  if (confirm('⚠ ¿Seguro? Esto borra TODOS los datos (partidos, pronósticos, etc.)')) {
-    ['partidos','pronosticos','pin'].forEach(k => S.del(k));
-    location.reload();
-  }
 }
 
 // ============ BOOT ============
