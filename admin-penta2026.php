@@ -77,6 +77,14 @@ if ($logged) {
         }
     }
 
+    // Eliminar participante y todos sus pronósticos
+    if (isset($_POST['eliminar_participante'])) {
+        $pid = (int)$_POST['participante_id'];
+        db()->prepare('DELETE FROM pronosticos WHERE participante_id = ?')->execute([$pid]);
+        db()->prepare('DELETE FROM participantes WHERE id = ?')->execute([$pid]);
+        $msg = 'Participante eliminado del ranking junto a todos sus pronósticos.';
+    }
+
     // Eliminar pronóstico
     if (isset($_POST['eliminar_prono'])) {
         $prid = (int)$_POST['prono_id'];
@@ -301,6 +309,38 @@ tr:last-child td{border-bottom:none;}
       </table>
     </div>
   </div>
+  <!-- Ranking con opción eliminar participante -->
+  <?php
+    $parts_rank = db()->query('SELECT id, email FROM participantes ORDER BY email')->fetchAll();
+  ?>
+  <div class="card">
+    <div class="card-title">Participantes del ranking (eliminar)</div>
+    <?php if (empty($parts_rank)): ?>
+      <p style="color:var(--text2);font-size:13px;">No hay participantes registrados.</p>
+    <?php else: ?>
+    <table>
+      <thead><tr><th>Email</th><th>Pronósticos</th><th></th></tr></thead>
+      <tbody>
+        <?php foreach ($parts_rank as $pt):
+          $np = count($pronos_x_partido ? array_filter($pronos_admin, fn($pr) => $pr['email'] === $pt['email']) : []);
+          $np = count(array_filter($pronos_admin, fn($pr) => $pr['email'] === $pt['email']));
+        ?>
+        <tr>
+          <td><?= htmlspecialchars($pt['email']) ?></td>
+          <td style="color:var(--text2)"><?= $np ?></td>
+          <td>
+            <form method="POST" onsubmit="return confirm('¿Eliminar a <?= htmlspecialchars(addslashes($pt['email'])) ?> y TODOS sus pronósticos? Esta acción no se puede deshacer.')">
+              <input type="hidden" name="participante_id" value="<?= $pt['id'] ?>"/>
+              <button type="submit" name="eliminar_participante" class="btn btn-danger btn-sm">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+    <?php endif; ?>
+  </div>
+
   <!-- Pronósticos por partido -->
   <div class="card">
     <div class="card-title">Pronósticos registrados (con opción de eliminar)</div>
