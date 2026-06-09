@@ -17,7 +17,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;}
 .header{background:var(--azul);color:#fff;padding:0 20px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(8,30,201,0.35);}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;padding:14px 0;margin-right:24px;white-space:nowrap;flex-shrink:0;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;padding:10px 0;margin-right:24px;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:8px;}
 .logo span{color:#aab4ff;font-size:13px;letter-spacing:1px;margin-left:6px;}
 .nav{display:flex;gap:0;flex:1;overflow-x:auto;}
 .nav-btn{padding:14px 15px;background:none;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;}
@@ -130,7 +130,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
 </head>
 <body>
 <header class="header">
-  <div class="logo">PENTA <span>MUNDIAL 2026</span></div>
+  <div class="logo"><img src="penta-logo-2025.png" alt="Penta" style="height:36px;vertical-align:middle;display:inline-block;"/> <span>MUNDIAL 2026</span></div>
   <nav class="nav">
     <button class="nav-btn active" onclick="goTab('prono',this)">🎯 Pronósticos</button>
     <button class="nav-btn" onclick="goTab('partidos',this)">⚽ Propuestas</button>
