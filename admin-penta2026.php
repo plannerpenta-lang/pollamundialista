@@ -47,6 +47,20 @@ if ($logged) {
         $msg = 'Resultado eliminado.';
     }
 
+    // Actualizar equipos de fase eliminatoria
+    if (isset($_POST['guardar_equipos'])) {
+        $pid   = (int)$_POST['partido_id'];
+        $local = trim($_POST['eq_local'] ?? '');
+        $vis   = trim($_POST['eq_visitante'] ?? '');
+        if ($local && $vis) {
+            db()->prepare('UPDATE partidos SET local=?, visitante=? WHERE id=? AND fase != "grupos"')
+                ->execute([$local, $vis, $pid]);
+            $msg = "Equipos actualizados: $local vs $vis";
+        } else {
+            $msg = 'Los dos equipos son obligatorios.'; $msg_type = 'error';
+        }
+    }
+
     // Agregar partido
     if (isset($_POST['agregar_partido'])) {
         $local = trim($_POST['p_local'] ?? '');
@@ -197,6 +211,46 @@ tr:last-child td{border-bottom:none;}
       </div>
       <button type="submit" name="agregar_partido" class="btn btn-primary">+ Agregar partido</button>
     </form>
+  </div>
+
+  <!-- Fases eliminatorias -->
+  <?php
+    $fases_elim = ['r16' => '16avos de Final', 'qf' => 'Cuartos de Final', 'sf' => 'Semifinales', 'final' => 'Final'];
+    $partidos_elim = array_filter($partidos, fn($p) => $p['fase'] !== 'grupos');
+    $partidos_por_fase = [];
+    foreach ($partidos_elim as $p) $partidos_por_fase[$p['fase']][] = $p;
+  ?>
+  <div class="card">
+    <div class="card-title">Fases eliminatorias — definir equipos</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:16px;">Actualiza los equipos clasificados a cada fase. Solo afecta partidos no definidos aún.</p>
+    <?php foreach ($fases_elim as $fase_key => $fase_label): ?>
+      <?php if (empty($partidos_por_fase[$fase_key])) continue; ?>
+      <div style="margin-bottom:24px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:var(--azul);margin-bottom:10px;padding-bottom:4px;border-bottom:2px solid var(--azul);"><?= $fase_label ?></div>
+        <div style="display:grid;gap:8px;">
+          <?php foreach ($partidos_por_fase[$fase_key] as $p): ?>
+            <form method="POST" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#f8f9ff;border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+              <input type="hidden" name="partido_id" value="<?= $p['id'] ?>"/>
+              <span style="font-size:11px;color:var(--text2);min-width:70px;"><?= htmlspecialchars($p['fecha'] ?? '—') ?></span>
+              <input type="text" name="eq_local" value="<?= htmlspecialchars($p['local']) ?>"
+                style="flex:1;min-width:100px;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;"
+                placeholder="Equipo local"
+                <?= ($p['local'] !== 'Por definir' && $p['local'] !== '') ? '' : '' ?>/>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--text2);">vs</span>
+              <input type="text" name="eq_visitante" value="<?= htmlspecialchars($p['visitante']) ?>"
+                style="flex:1;min-width:100px;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;"
+                placeholder="Equipo visitante"/>
+              <?php if ($p['local'] !== 'Por definir'): ?>
+                <span style="font-size:11px;color:#22c55e;font-weight:600;">✓ Definido</span>
+              <?php else: ?>
+                <span style="font-size:11px;color:#f59e0b;font-weight:600;">Pendiente</span>
+              <?php endif; ?>
+              <button type="submit" name="guardar_equipos" class="btn btn-primary btn-sm">Guardar</button>
+            </form>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    <?php endforeach; ?>
   </div>
 
   <!-- Lista de partidos con resultados -->
