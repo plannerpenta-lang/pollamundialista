@@ -93,7 +93,13 @@ if ($logged) {
     }
 
     // Cargar datos
-    $partidos = db()->query('SELECT * FROM partidos ORDER BY grupo, fecha, id')->fetchAll();
+    $partidos = db()->query('SELECT * FROM partidos ORDER BY fecha, id')->fetchAll();
+    // Agrupar por fase en orden canónico
+    $fase_orden_map = ['grupos' => 0, 'r16' => 1, 'qf' => 2, 'sf' => 3, 'final' => 4];
+    $fase_labels_map = ['grupos' => 'Fase de Grupos', 'r16' => '16avos de Final', 'qf' => 'Cuartos de Final', 'sf' => 'Semifinales', 'final' => 'Final'];
+    $partidos_por_fase_admin = [];
+    foreach ($partidos as $p) $partidos_por_fase_admin[$p['fase']][] = $p;
+    uksort($partidos_por_fase_admin, fn($a,$b) => ($fase_orden_map[$a] ?? 99) - ($fase_orden_map[$b] ?? 99));
     $pronos_admin = db()->query('
         SELECT pr.id, pr.goles_local, pr.goles_visitante, pr.ingresado_at,
                p.email, pa.id AS partido_id, pa.local, pa.visitante
@@ -160,6 +166,12 @@ tr:last-child td{border-bottom:none;}
 .pin-input{width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius);font-size:16px;text-align:center;outline:none;margin-bottom:14px;}
 .pin-input:focus{border-color:var(--azul);}
 @media(max-width:600px){.form-grid.two,.form-grid.three{grid-template-columns:1fr;}}
+.fase-toggle-admin{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#f8f9ff;border:none;border-bottom:1px solid var(--border);cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;color:var(--azul);text-align:left;transition:background .15s;}
+.fase-toggle-admin:hover{background:#eef0ff;}
+.fase-toggle-admin .arrow{transition:transform .25s;color:var(--azul);}
+.fase-toggle-admin.open .arrow{transform:rotate(180deg);}
+.fase-body-admin{display:none;}
+.fase-body-admin.open{display:block;}
 </style>
 </head>
 <body>
@@ -261,53 +273,70 @@ tr:last-child td{border-bottom:none;}
     <?php endforeach; ?>
   </div>
 
-  <!-- Lista de partidos con resultados -->
-  <div class="card">
-    <div class="card-title">Partidos y resultados oficiales</div>
-    <div style="overflow-x:auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>Partido</th>
-            <th>Fase / Grupo</th>
-            <th>Fecha</th>
-            <th>Resultado actual</th>
-            <th>Establecer resultado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($partidos as $p): ?>
-          <tr>
-            <td style="font-weight:500;"><?= htmlspecialchars($p['local']) ?> vs <?= htmlspecialchars($p['visitante']) ?></td>
-            <td style="color:var(--text2);"><?= htmlspecialchars($p['grupo'] ?: $p['fase']) ?></td>
-            <td style="color:var(--text2);"><?= htmlspecialchars($p['fecha'] ?? '—') ?></td>
-            <td>
-              <?php if ($p['goles_local'] !== null): ?>
-                <span class="resultado-actual"><?= $p['goles_local'] ?> — <?= $p['goles_visitante'] ?></span>
-                <form method="POST" style="display:inline;margin-left:8px;" onsubmit="return confirm('¿Borrar este resultado?')">
-                  <input type="hidden" name="partido_id" value="<?= $p['id'] ?>"/>
-                  <button type="submit" name="borrar_resultado" class="btn btn-danger btn-sm">✕</button>
-                </form>
-              <?php else: ?>
-                <span style="color:#ccc;font-size:12px;">Pendiente</span>
-              <?php endif; ?>
-            </td>
-            <td>
-              <form method="POST" style="display:flex;align-items:center;gap:8px;">
-                <input type="hidden" name="partido_id" value="<?= $p['id'] ?>"/>
-                <div class="score-mini">
-                  <input type="number" name="goles_local" min="0" max="20" placeholder="—" value="<?= $p['goles_local'] ?? '' ?>"/>
-                  <span style="font-family:'Bebas Neue';font-size:16px;color:var(--text2);">:</span>
-                  <input type="number" name="goles_visitante" min="0" max="20" placeholder="—" value="<?= $p['goles_visitante'] ?? '' ?>"/>
-                </div>
-                <button type="submit" name="guardar_resultado" class="btn btn-primary btn-sm">✓</button>
-              </form>
-            </td>
-          </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
+  <!-- Lista de partidos con resultados — acordeón por fase -->
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div style="padding:14px 20px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text2);">Partidos y resultados oficiales</div>
+    <?php foreach ($partidos_por_fase_admin as $fase => $plist):
+      $label = $fase_labels_map[$fase] ?? $fase;
+      $con_resultado = count(array_filter($plist, fn($p) => $p['goles_local'] !== null));
+      $open = $fase === 'grupos';
+    ?>
+      <div style="border-bottom:1px solid var(--border);">
+        <button class="fase-toggle-admin <?= $open ? 'open' : '' ?>" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+          <span><?= $fase_labels_map[$fase] ?? $fase ?></span>
+          <span style="display:flex;align-items:center;gap:12px;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--text2);letter-spacing:0;"><?= count($plist) ?> partidos &nbsp;·&nbsp; <?= $con_resultado ?> con resultado</span>
+            <svg class="arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+        <div class="fase-body-admin <?= $open ? 'open' : '' ?>">
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Partido</th>
+                  <th>Grupo</th>
+                  <th>Fecha</th>
+                  <th>Resultado actual</th>
+                  <th>Establecer resultado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($plist as $p): ?>
+                <tr>
+                  <td style="font-weight:500;"><?= htmlspecialchars($p['local']) ?> vs <?= htmlspecialchars($p['visitante']) ?></td>
+                  <td style="color:var(--text2);"><?= htmlspecialchars($p['grupo'] ?: '—') ?></td>
+                  <td style="color:var(--text2);white-space:nowrap;"><?= htmlspecialchars($p['fecha'] ?? '—') ?></td>
+                  <td>
+                    <?php if ($p['goles_local'] !== null): ?>
+                      <span class="resultado-actual"><?= $p['goles_local'] ?> — <?= $p['goles_visitante'] ?></span>
+                      <form method="POST" style="display:inline;margin-left:8px;" onsubmit="return confirm('¿Borrar este resultado?')">
+                        <input type="hidden" name="partido_id" value="<?= $p['id'] ?>"/>
+                        <button type="submit" name="borrar_resultado" class="btn btn-danger btn-sm">✕</button>
+                      </form>
+                    <?php else: ?>
+                      <span style="color:#ccc;font-size:12px;">Pendiente</span>
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <form method="POST" style="display:flex;align-items:center;gap:8px;">
+                      <input type="hidden" name="partido_id" value="<?= $p['id'] ?>"/>
+                      <div class="score-mini">
+                        <input type="number" name="goles_local" min="0" max="20" placeholder="—" value="<?= $p['goles_local'] ?? '' ?>"/>
+                        <span style="font-family:'Bebas Neue';font-size:16px;color:var(--text2);">:</span>
+                        <input type="number" name="goles_visitante" min="0" max="20" placeholder="—" value="<?= $p['goles_visitante'] ?? '' ?>"/>
+                      </div>
+                      <button type="submit" name="guardar_resultado" class="btn btn-primary btn-sm">✓</button>
+                    </form>
+                  </td>
+                </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <?php endforeach; ?>
   </div>
   <!-- Ranking con opción eliminar participante -->
   <?php
