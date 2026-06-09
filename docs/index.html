@@ -61,8 +61,6 @@ tr:hover td{background:#f4f6ff;}
 .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;}
 .badge-blue{background:#e8ecff;color:var(--azul);}
 .badge-orange{background:#fff3e0;color:#e65c00;}
-.badge-green{background:#e6f9ee;color:#007a33;}
-.badge-red{background:#ffe8e8;color:var(--rojo);}
 .partido-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:14px;overflow:hidden;box-shadow:0 1px 4px rgba(8,30,201,0.06);}
 .partido-header{background:var(--azul);color:#fff;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 .partido-vs{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;}
@@ -169,6 +167,10 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
     <button class="btn btn-secondary btn-sm" onclick="filterP('Grupo H',this)">Grupo H</button>
     <button class="btn btn-secondary btn-sm" onclick="filterP('Grupo I',this)">Grupo I</button>
     <button class="btn btn-secondary btn-sm" onclick="filterP('Grupo J',this)">Grupo J</button>
+    <button class="btn btn-secondary btn-sm" onclick="filterP('r16',this)">16avos</button>
+    <button class="btn btn-secondary btn-sm" onclick="filterP('qf',this)">Cuartos</button>
+    <button class="btn btn-secondary btn-sm" onclick="filterP('sf',this)">Semis</button>
+    <button class="btn btn-secondary btn-sm" onclick="filterP('final',this)">Final</button>
   </div>
   <div id="partidosView"></div>
 </div>
@@ -244,7 +246,7 @@ hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
       <div class="card-title">Resultados oficiales</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Partido</th><th>Grupo</th><th>Resultado actual</th><th>Establecer resultado</th></tr></thead>
+          <thead><tr><th>Partido</th><th>Fase</th><th>Editar equipos</th><th>Resultado actual</th><th>Establecer resultado</th></tr></thead>
           <tbody id="adminPartidosBody"></tbody>
         </table>
       </div>
@@ -333,6 +335,29 @@ function initPartidos() {
     ['Panamá','Croacia','grupos','Grupo J','2026-06-23'],
     ['Panamá','Inglaterra','grupos','Grupo J','2026-06-27'],
     ['Croacia','Ghana','grupos','Grupo J','2026-06-27'],
+    ['Por definir','Por definir','r16','16avos','2026-06-30'],
+    ['Por definir','Por definir','r16','16avos','2026-06-30'],
+    ['Por definir','Por definir','r16','16avos','2026-07-01'],
+    ['Por definir','Por definir','r16','16avos','2026-07-01'],
+    ['Por definir','Por definir','r16','16avos','2026-07-02'],
+    ['Por definir','Por definir','r16','16avos','2026-07-02'],
+    ['Por definir','Por definir','r16','16avos','2026-07-03'],
+    ['Por definir','Por definir','r16','16avos','2026-07-03'],
+    ['Por definir','Por definir','r16','16avos','2026-07-04'],
+    ['Por definir','Por definir','r16','16avos','2026-07-04'],
+    ['Por definir','Por definir','r16','16avos','2026-07-05'],
+    ['Por definir','Por definir','r16','16avos','2026-07-05'],
+    ['Por definir','Por definir','r16','16avos','2026-07-06'],
+    ['Por definir','Por definir','r16','16avos','2026-07-06'],
+    ['Por definir','Por definir','r16','16avos','2026-07-07'],
+    ['Por definir','Por definir','r16','16avos','2026-07-08'],
+    ['Por definir','Por definir','qf','Cuartos','2026-07-11'],
+    ['Por definir','Por definir','qf','Cuartos','2026-07-11'],
+    ['Por definir','Por definir','qf','Cuartos','2026-07-12'],
+    ['Por definir','Por definir','qf','Cuartos','2026-07-12'],
+    ['Por definir','Por definir','sf','Semifinal','2026-07-15'],
+    ['Por definir','Por definir','sf','Semifinal','2026-07-16'],
+    ['Por definir','Por definir','final','Final','2026-07-19'],
   ];
   st.partidos = P.map((p,i) => ({
     id: 'p'+i, local: p[0], visitante: p[1], fase: p[2], grupo: p[3], fecha: p[4],
@@ -435,12 +460,7 @@ function guardarProno() {
   if (yaExiste) return showAlert(alertEl, 'Ya tienes un pronóstico para ese partido.');
 
   document.getElementById('pronoEmail').value = email;
-
-  st.pronosticos.push({
-    id: 'pr'+Date.now(), email, pid,
-    gl: parseInt(gl), gv: parseInt(gv),
-    at: nowBogota()
-  });
+  st.pronosticos.push({ id: 'pr'+Date.now(), email, pid, gl: parseInt(gl), gv: parseInt(gv), at: nowBogota() });
   save();
   alertEl.innerHTML = `<div class="alert alert-ok">✓ Pronóstico guardado para <strong>${email}</strong>. <a href="#" onclick="goTab('partidos',null);document.querySelectorAll('.nav-btn')[1].classList.add('active');document.querySelectorAll('.nav-btn')[0].classList.remove('active');return false;">Ver propuestas →</a></div>`;
   document.getElementById('pronoGL').value = '0';
@@ -469,7 +489,11 @@ function filterP(f, btn) {
 function renderPartidos() {
   const view = document.getElementById('partidosView');
   let partidos = st.partidos;
-  if (curFilter !== 'all') partidos = partidos.filter(p => p.grupo === curFilter);
+  const fasesElim = ['r16','qf','sf','final'];
+  if (curFilter !== 'all') {
+    if (fasesElim.includes(curFilter)) partidos = partidos.filter(p => p.fase === curFilter);
+    else partidos = partidos.filter(p => p.grupo === curFilter);
+  }
   if (!partidos.length) {
     view.innerHTML = '<div class="empty"><div class="empty-icon">⚽</div>No hay partidos en esta categoría.</div>';
     return;
@@ -492,9 +516,7 @@ function renderPartidos() {
             <div class="partido-vs">${p.local} vs ${p.visitante}</div>
             <div class="partido-meta">${p.fecha} &nbsp;|&nbsp; ${pronos.length} propuesta${pronos.length !== 1 ? 's' : ''}</div>
           </div>
-          ${tieneRes
-            ? `<span class="resultado-badge">${p.golesLocal} — ${p.golesVisitante}</span>`
-            : `<span class="pendiente-badge">Resultado pendiente</span>`}
+          ${tieneRes ? `<span class="resultado-badge">${p.golesLocal} — ${p.golesVisitante}</span>` : `<span class="pendiente-badge">Resultado pendiente</span>`}
         </div>`;
       if (!pronos.length) {
         html += `<div class="empty" style="padding:16px;">Aún no hay pronósticos.</div>`;
@@ -504,12 +526,7 @@ function renderPartidos() {
           const pts = calcPts(pr, p);
           const ptsClass = pts === null ? 'pts-pend' : `pts-${Math.min(pts,10)}`;
           const ptsLabel = pts === null ? '?' : (pts > 0 ? '+'+pts : '0');
-          html += `<div class="prono-row">
-            <div class="prono-email">${pr.email}</div>
-            <div class="prono-score">${pr.gl}—${pr.gv}</div>
-            <div class="prono-time">⏱ ${formatBogota(pr.at)} (UTC-5)</div>
-            <div class="prono-pts ${ptsClass}">${ptsLabel}</div>
-          </div>`;
+          html += `<div class="prono-row"><div class="prono-email">${pr.email}</div><div class="prono-score">${pr.gl}—${pr.gv}</div><div class="prono-time">⏱ ${formatBogota(pr.at)} (UTC-5)</div><div class="prono-pts ${ptsClass}">${ptsLabel}</div></div>`;
         });
         html += `</div>`;
       }
@@ -554,14 +571,7 @@ function renderRanking() {
     const esUlt = pos === n && n > 3;
     const rc = pos===1?'r1':pos===2?'r2':pos===3?'r3':esUlt?'rl':'';
     const medal = pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':esUlt?'😅':pos;
-    return `<tr>
-      <td><span class="rank ${rc}">${medal}</span></td>
-      <td style="font-size:13px;">${r.email}</td>
-      <td style="text-align:center"><span class="badge badge-blue">${r.exactos} 🎯</span></td>
-      <td style="text-align:center"><span class="badge badge-orange">${r.ganadores} ✓</span></td>
-      <td style="text-align:center;color:var(--text3)">${r.total}</td>
-      <td style="text-align:right"><span class="pts-big">${r.pts}</span></td>
-    </tr>`;
+    return `<tr><td><span class="rank ${rc}">${medal}</span></td><td style="font-size:13px;">${r.email}</td><td style="text-align:center"><span class="badge badge-blue">${r.exactos} 🎯</span></td><td style="text-align:center"><span class="badge badge-orange">${r.ganadores} ✓</span></td><td style="text-align:center;color:var(--text3)">${r.total}</td><td style="text-align:right"><span class="pts-big">${r.pts}</span></td></tr>`;
   }).join('');
 }
 
@@ -608,25 +618,35 @@ function addPartido() {
   toast('✓ Partido agregado');
 }
 
+function editarEquipos(pid) {
+  const p = st.partidos.find(x => x.id === pid);
+  const l = prompt('Equipo local:', p.local);
+  if (l === null) return;
+  const v = prompt('Equipo visitante:', p.visitante);
+  if (v === null) return;
+  if (l.trim()) p.local = l.trim();
+  if (v.trim()) p.visitante = v.trim();
+  save(); renderAdminPartidos(); fillPronoSelect();
+  toast('✓ Equipos actualizados');
+}
+
 function renderAdminPartidos() {
   const tbody = document.getElementById('adminPartidosBody');
   tbody.innerHTML = st.partidos.map(p => `<tr>
     <td style="font-weight:500">${p.local} vs ${p.visitante}</td>
     <td style="color:var(--text2)">${p.grupo || p.fase}</td>
+    <td><button class="btn btn-secondary btn-sm" onclick="editarEquipos('${p.id}')">&#9999; Editar</button></td>
     <td>
       ${p.golesLocal !== null
-        ? `<span style="font-family:'Bebas Neue';font-size:18px;color:var(--azul);letter-spacing:2px;">${p.golesLocal} — ${p.golesVisitante}</span>
-           <button class="btn btn-danger btn-sm" style="margin-left:8px;" onclick="borrarResultado('${p.id}')">✕</button>`
+        ? `<span style="font-family:'Bebas Neue';font-size:18px;color:var(--azul);letter-spacing:2px;">${p.golesLocal} — ${p.golesVisitante}</span><button class="btn btn-danger btn-sm" style="margin-left:8px;" onclick="borrarResultado('${p.id}')">&#x2715;</button>`
         : `<span style="color:#ccc;font-size:12px;">Pendiente</span>`}
     </td>
     <td>
       <div style="display:flex;align-items:center;gap:6px;">
-        <input type="number" id="rl-${p.id}" min="0" max="20" placeholder="—" value="${p.golesLocal ?? ''}"
-          style="width:42px;padding:5px;text-align:center;border:1px solid var(--border2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:16px;outline:none;"/>
+        <input type="number" id="rl-${p.id}" min="0" max="20" placeholder="—" value="${p.golesLocal ?? ''}" style="width:42px;padding:5px;text-align:center;border:1px solid var(--border2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:16px;outline:none;"/>
         <span style="font-family:'Bebas Neue';color:var(--text3);">:</span>
-        <input type="number" id="rv-${p.id}" min="0" max="20" placeholder="—" value="${p.golesVisitante ?? ''}"
-          style="width:42px;padding:5px;text-align:center;border:1px solid var(--border2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:16px;outline:none;"/>
-        <button class="btn btn-primary btn-sm" onclick="guardarResultado('${p.id}')">✓</button>
+        <input type="number" id="rv-${p.id}" min="0" max="20" placeholder="—" value="${p.golesVisitante ?? ''}" style="width:42px;padding:5px;text-align:center;border:1px solid var(--border2);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:16px;outline:none;"/>
+        <button class="btn btn-primary btn-sm" onclick="guardarResultado('${p.id}')">&#x2713;</button>
       </div>
     </td>
   </tr>`).join('');
