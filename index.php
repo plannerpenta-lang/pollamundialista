@@ -56,13 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Cargar partidos agrupados
-$partidos_q = db()->query('SELECT * FROM partidos ORDER BY grupo, fecha, id');
+// Cargar partidos agrupados en orden canónico de fases
+$fase_orden_idx = ['grupos' => 0, 'r16' => 1, 'qf' => 2, 'sf' => 3, 'final' => 4];
+$partidos_q = db()->query('SELECT * FROM partidos ORDER BY fecha, id');
 $partidos = $partidos_q->fetchAll();
 $grupos = [];
 foreach ($partidos as $p) {
-    $grupos[$p['grupo'] ?: $p['fase']][] = $p;
+    $grupos[$p['fase']][$p['grupo'] ?: $p['fase']][] = $p;
 }
+uksort($grupos, fn($a,$b) => ($fase_orden_idx[$a] ?? 99) - ($fase_orden_idx[$b] ?? 99));
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -137,7 +139,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
           <label>Partido *</label>
           <select name="partido_id" required onchange="updateLabels(this)">
             <option value="">— Selecciona un partido —</option>
-            <?php foreach ($grupos as $grp => $pts): ?>
+            <?php foreach ($grupos as $fase => $subgrupos): ?>
+              <?php foreach ($subgrupos as $grp => $pts): ?>
               <optgroup label="<?= htmlspecialchars($grp) ?>">
                 <?php foreach ($pts as $pt): ?>
                   <?php $res = $pt['goles_local'] !== null ? ' (' . $pt['goles_local'] . '-' . $pt['goles_visitante'] . ')' : ''; ?>
@@ -149,6 +152,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
                   </option>
                 <?php endforeach; ?>
               </optgroup>
+              <?php endforeach; ?>
             <?php endforeach; ?>
           </select>
         </div>
